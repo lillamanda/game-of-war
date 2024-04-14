@@ -7,6 +7,9 @@ let currentPlayerCard;
 let opponentCardEl = document.getElementById("opponent-card");
 let playerCardEl = document.getElementById("player-card");
 
+let opponentScore = 0;
+let playerScore = 0;
+
 function getNewDeck(){ //handleClick() {
     fetch("https://deckofcardsapi.com/api/deck/new/shuffle/")
         .then(res => res.json())
@@ -24,20 +27,42 @@ function draw(){
             currentOpponentCard = data.cards[0];
             currentPlayerCard = data.cards[1];
             renderCards();
+            checkDrawWinner(currentOpponentCard, currentPlayerCard);
+            renderRemainingCards(data.remaining);
         })
 }
 
-document.getElementById("new-deck").addEventListener("click", getNewDeck);
+document.getElementById("new-game").addEventListener("click", function(){
+    getNewDeck(); 
+    showModal(false);
+});
 document.getElementById("draw-btn").addEventListener("click", draw);
+document.getElementById("close-btn").addEventListener("click", function(){
+    showModal(false);
+});
+
+function showModal(showModal){
+    const startGameModal = document.getElementById("start-game-modal");
+    if (showModal){
+        startGameModal.style.display = "block";
+    }
+    else {
+        startGameModal.style.display = "none";
+    }
+}
+
 
 function renderCards(){
     clearCards();
 
     const opponentCard = document.createElement("img");
-    opponentCard.setAttribute("src", `${currentOpponentCard.image}`)
+    opponentCard.setAttribute("src", `${currentOpponentCard.image}`);
+    opponentCard.classList.add("card");
 
     const playerCard = document.createElement("img");
-    playerCard.setAttribute("src", `${currentPlayerCard.image}`)
+    playerCard.setAttribute("src", `${currentPlayerCard.image}`);
+    playerCard.classList.add("card");
+
 
     opponentCardEl.append(opponentCard);
     playerCardEl.append(playerCard)
@@ -46,4 +71,64 @@ function renderCards(){
 function clearCards(){
     opponentCardEl.innerHTML = "";
     playerCardEl.innerHTML = "";
+}
+
+function checkDrawWinner(opponentCard, playerCard){
+    const opponentCardScore = convertCardValueToNumber(opponentCard.value);
+    const playerCardScore = convertCardValueToNumber(playerCard.value);
+
+    if (opponentCardScore === playerCardScore){
+        // Both get score? or none? 
+        console.log("It's a tie!")
+        addScore("opponent");
+        addScore("player");
+    }
+    else if(opponentCardScore > playerCardScore){
+        console.log("Opponent wins!");
+        addScore("opponent");
+    }
+    else{
+        console.log("Player wins!")
+        addScore("player");
+    }
+}
+
+function convertCardValueToNumber(cardValue){
+    let cardValueInNumber;
+    switch (cardValue) {
+        case "ACE":
+            cardValueInNumber = 14;
+            break;
+        case "KING":
+            cardValueInNumber = 13;
+            break;
+        case "QUEEN":
+            cardValueInNumber = 12;
+            break;
+        case "JACK":
+            cardValueInNumber = 11;
+            break;
+        default:
+            cardValueInNumber = Number(cardValue);
+    }
+    return cardValueInNumber;
+}
+
+function addScore(playerOrOpponent){
+    if (playerOrOpponent == "player"){
+        playerScore += 1;
+    }
+    else{
+        opponentScore += 1;
+    }
+    renderScore();
+}
+
+function renderScore(){
+    document.getElementById("opponent-score-count").innerText = opponentScore;
+    document.getElementById("player-score-count").innerText = playerScore;
+}
+
+function renderRemainingCards(remainingCards){
+    document.getElementById("remaining-cards-count").innerText = remainingCards;
 }

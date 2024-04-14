@@ -6,10 +6,6 @@ html, body {
 body{
     background-color: #1c1c1c;
     background-color: #07210a;
-    min-height: 500px;
-    display: flex; 
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 button{
@@ -21,3 +17,205 @@ button{
     border-radius: 8px; 
 }
 
+button:focus, 
+button:hover{
+    background-color: rgb(218, 218, 218);
+}
+
+
+/* .card{
+    background-color: rgb(0, 0, 0, 0.3);
+} */
+
+.card-pile{
+    background-color: rgb(0, 0, 0);
+    background-image: url(/cardBack.png);
+    background-size: cover;
+    border: 1.5px solid #f8cb54;
+}
+
+.card, 
+.card-pile{
+    background-color: rgb(0, 0, 0, 0.3);
+    width: 125px;
+    aspect-ratio: 5 / 7;
+    border-radius: 8px;
+}
+
+.draw-btn{
+    border: 1px solid #b25928;
+    box-shadow: 0 0 4px 1px #c17b00;
+}
+
+.score,
+.remaining-cards{
+    font-weight: bold;
+}
+
+.score{
+    /* display: flex;  */
+    /* flex-direction: column; */
+    width: 100px;
+    height: 95px;
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
+}
+
+#opponent-score{grid-template-rows: 1fr 0.6fr;}
+#player-score{grid-template-rows: 0.6fr 1fr;}
+
+.score-decoration{
+    fill: #c17b00;
+    stroke: rgb(248, 203, 84, 0.5);
+    stroke-width: 2px;
+    filter: drop-shadow(0 0 4px rgb(178, 89, 40));
+    /* filter: drop-shadow( 0 3px rgb(178, 89, 40)); */
+
+    width: 100px;
+}
+
+.score p{
+    color: #ffede3;
+    text-shadow: 0 0 5px #c17b00;
+    
+    /* text-shadow: #c17b00; */
+    padding: 0; 
+    margin: 0; 
+
+}
+
+.score-number{
+    font-size: 2.5rem;
+}
+
+#opponent-score .score-title{
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 1;
+    align-self: end;
+    justify-self: end;
+    margin-right: 0.5em;
+}
+
+#opponent-score .score-decoration{
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    z-index: -1;
+}
+
+#opponent-score .score-number{
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 1;
+    justify-self: start;
+    align-self: end;
+}
+
+#player-score .score-title{
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 1;
+    align-self: start;
+}
+
+#player-score .score-decoration{
+    rotate: 180deg;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    z-index: -1;
+}
+
+#player-score .score-number{
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
+    justify-self: end;
+    align-self: start;
+}
+
+.remaining-cards{
+    font-size: 1.125rem;
+
+    color: #f8cb54;
+    color: rgb(248, 203, 84, 0.8);
+    text-shadow:
+        1px 1px 2px #07210a,
+        0 0 0.25em #f8cb54,
+        0 0 1em #b25928,
+        0 0 0.2em #b25928;
+}
+
+.modal{
+    /* display: none; */
+    position: fixed;
+    left: 0; 
+    top: 0; 
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* display: flex; 
+    justify-content: center;
+    align-items: center; */
+}
+
+.modal-content{
+    margin: 15% auto;
+    width: 250px;
+
+    border: 2px solid white;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    padding: 1em 1em 2.5em 1em;
+
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    align-self: end;
+    font-size: 28px;
+    font-weight: bold;
+}
+  
+.close:hover,
+.close:focus{
+    color: rgb(218, 218, 218);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.container{
+    display: grid;
+    max-width: 600px; 
+    margin: 3em auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 2fr 1fr 1.5fr 1fr 2fr 1fr;
+    grid-template-areas: 
+        "oppPile        .            .    "
+        "oppPile     oppCard     oppScore "
+        "   .        oppCard         .    "
+        "   .        remCards        .    "
+        "   .        playCard        .    "
+        "playScore   playCard    playPile "
+        "   .           .        playPile ";
+}
+
+.container div, 
+#draw-btn{
+    justify-self: center; 
+    align-self: center;
+}
+
+#opponent-card{grid-area: oppCard;}
+#opponent-pile{grid-area: oppPile;}
+#opponent-score{grid-area: oppScore;}
+
+.remaining-cards{grid-area: remCards;}
+
+#player-card{grid-area: playCard;}
+#player-pile{grid-area: playPile;}
+#player-score{grid-area: playScore;}
+
+#draw-btn{grid-area: playPile;} 
