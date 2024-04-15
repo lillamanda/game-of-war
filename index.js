@@ -1,5 +1,4 @@
 
-// let deck; 
 let deckId;
 let currentOpponentCard;
 let currentPlayerCard;
@@ -20,7 +19,6 @@ function getNewDeck(){
     fetch("https://deckofcardsapi.com/api/deck/new/shuffle/")
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             deckId = data.deck_id;
             renderRemainingCards(52);
     })
@@ -123,16 +121,13 @@ function checkDrawWinner(opponentCard, playerCard){
 
     if (opponentCardScore === playerCardScore){
         // Both get score? or none? 
-        console.log("It's a tie!")
         addScore("opponent");
         addScore("player");
     }
     else if(opponentCardScore > playerCardScore){
-        console.log("Opponent wins!");
         addScore("opponent");
     }
     else{
-        console.log("Player wins!")
         addScore("player");
     }
 }
