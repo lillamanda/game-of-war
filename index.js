@@ -6,17 +6,23 @@ let currentPlayerCard;
 
 let opponentCardEl = document.getElementById("opponent-card");
 let playerCardEl = document.getElementById("player-card");
+let drawBtn = document.getElementById("draw-btn");
+let announcementEl = document.getElementById("announcement-el"); 
 
 let opponentScore = 0;
 let playerScore = 0;
 
-function getNewDeck(){ //handleClick() {
+
+// Add multiple cards to cardpile - dependent on remaining, connect to "renderRemainingCards"
+// use z-index: -1, -2 for each, and skew them slightly behind the card in front.
+
+function getNewDeck(){ 
     fetch("https://deckofcardsapi.com/api/deck/new/shuffle/")
         .then(res => res.json())
         .then(data => {
-            // deck = data;
             console.log(data)
             deckId = data.deck_id;
+            renderRemainingCards(52);
     })
 };
 
@@ -29,17 +35,55 @@ function draw(){
             renderCards();
             checkDrawWinner(currentOpponentCard, currentPlayerCard);
             renderRemainingCards(data.remaining);
+
+            if(data.remaining <= 0){
+                disableDrawBtn(true);
+                displayWinner()
+            }
         })
 }
 
+function displayWinner(){
+
+    let displayText = "";
+
+    if (opponentScore > playerScore){
+        displayText = "Opponent wins!";
+    }
+    else if (playerScore > opponentScore){
+        displayText = "You win!";
+    }
+    else {
+        displayText = "It's a tie!";
+    }
+
+    announcementEl.textContent = displayText;
+    showModal(true);
+}
+
+function resetGame(){
+    getNewDeck();
+    
+    disableDrawBtn(false);
+
+    announcementEl.textContent = "Let's play a game of War";
+
+    playerScore = 0; 
+    opponentScore = 0;
+    renderScore();
+}
+
+function disableDrawBtn(shouldDisable){
+    drawBtn.disabled = shouldDisable || false;
+}
+
 document.getElementById("new-game").addEventListener("click", function(){
+    resetGame();
     getNewDeck(); 
     showModal(false);
 });
-document.getElementById("draw-btn").addEventListener("click", draw);
-document.getElementById("close-btn").addEventListener("click", function(){
-    showModal(false);
-});
+drawBtn.addEventListener("click", draw);
+
 
 function showModal(showModal){
     const startGameModal = document.getElementById("start-game-modal");
