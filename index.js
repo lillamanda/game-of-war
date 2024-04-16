@@ -12,8 +12,12 @@ let opponentScore = 0;
 let playerScore = 0;
 
 
+// Things that can be improved upon:
 // Add multiple cards to cardpile - dependent on remaining, connect to "renderRemainingCards"
 // use z-index: -1, -2 for each, and skew them slightly behind the card in front.
+// add a visual cue/feedback for each carddraw-result - color the card/sum, add text over/under "remaining-cards"?
+// media queries, make phone-version better and use the desktop space more efficiently/make it larger
+
 
 function getNewDeck(){ 
     fetch("https://deckofcardsapi.com/api/deck/new/shuffle/")
@@ -119,15 +123,14 @@ function checkDrawWinner(opponentCard, playerCard){
     const opponentCardScore = convertCardValueToNumber(opponentCard.value);
     const playerCardScore = convertCardValueToNumber(playerCard.value);
 
-    if (opponentCardScore === playerCardScore){
-        // Both get score? or none? 
+    if (opponentCardScore === playerCardScore){ // Tie
         addScore("opponent");
         addScore("player");
     }
-    else if(opponentCardScore > playerCardScore){
+    else if(opponentCardScore > playerCardScore){ // Opponent wins
         addScore("opponent");
     }
-    else{
+    else{ // Player wins
         addScore("player");
     }
 }
