@@ -2,6 +2,8 @@ html, body {
     margin: 0;
     padding: 0;
     user-select: none;
+
+    font-family: "Fredoka", sans-serif;
 }
 
 body{
@@ -10,11 +12,13 @@ body{
 }
 
 button{
-    font-weight: 600;
+    font-weight: 500;
     padding: 1em 2em;
     margin: 1em;
     border: none;
     border-radius: 8px; 
+    font-family: "Fredoka", sans-serif;
+
 }
 
 button:focus, 
@@ -42,9 +46,14 @@ button:hover{
     box-shadow: 0 0 4px 1px #c17b00;
 }
 
+.draw-btn:disabled{
+    opacity: 100;
+    
+}
+
 .score,
 .remaining-cards{
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .score{
@@ -131,7 +140,7 @@ button:hover{
 }
 
 .modal{
-    /* display: none; */
+    display: none;
     position: fixed;
     left: 0; 
     top: 0; 
